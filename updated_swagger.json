@@ -1,0 +1,2016 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "AutoWellness API",
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/cars": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Create Car",
+        "operationId": "create_car_cars_post",
+        "security": [{"HTTPBearer": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {"$ref": "#/components/schemas/Body_create_car_cars_post"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/CarCreateResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get All Cars",
+        "operationId": "get_all_cars_cars_get",
+        "parameters": [
+          {"name": "page", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "default": 1, "title": "Page"}},
+          {"name": "page_size", "in": "query", "required": false, "schema": {"type": "integer", "maximum": 100, "default": 10, "title": "Page Size"}},
+          {"name": "sort_by", "in": "query", "required": false, "schema": {"type": "string", "default": "expected_price", "title": "Sort By"}},
+          {"name": "order", "in": "query", "required": false, "schema": {"type": "string", "default": "asc", "title": "Order"}},
+          {"name": "city", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "City"}},
+          {"name": "fuel_type", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Fuel Type"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/CarResponse"}, "title": "Response Get All Cars Cars Get"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dealers/{dealer_id}/cars": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get Cars By Dealer",
+        "operationId": "get_cars_by_dealer_dealers__dealer_id__cars_get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "dealer_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Dealer Id"}},
+          {"name": "page", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "description": "Page number (1-based)", "default": 1, "title": "Page"}, "description": "Page number (1-based)"},
+          {"name": "page_size", "in": "query", "required": false, "schema": {"type": "integer", "maximum": 100, "minimum": 1, "description": "Items per page", "default": 10, "title": "Page Size"}, "description": "Items per page"},
+          {"name": "sort_by", "in": "query", "required": false, "schema": {"type": "string", "description": "Sort by: price, kms, year, created_at", "default": "price", "title": "Sort By"}, "description": "Sort by: price, kms, year, created_at"},
+          {"name": "order", "in": "query", "required": false, "schema": {"type": "string", "description": "Sort order: asc or desc", "default": "asc", "title": "Order"}, "description": "Sort order: asc or desc"},
+          {"name": "status", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "description": "Filter by status: available or sold", "title": "Status"}, "description": "Filter by status: available or sold"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/CarResponse"}, "title": "Response Get Cars By Dealer Dealers  Dealer Id  Cars Get"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{car_id}/report": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Upload Car Report Endpoint",
+        "operationId": "upload_car_report_endpoint_cars__car_id__report_post",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {"$ref": "#/components/schemas/Body_upload_car_report_endpoint_cars__car_id__report_post"}
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{car_id}/images": {
+      "post": {
+        "tags": ["Cars"],
+        "summary": "Upload Car Images",
+        "operationId": "upload_car_images_cars__car_id__images_post",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {"$ref": "#/components/schemas/Body_upload_car_images_cars__car_id__images_post"}
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{car_id}/images/{image_id}": {
+      "delete": {
+        "tags": ["Cars"],
+        "summary": "Delete Car Image",
+        "operationId": "delete_car_image_cars__car_id__images__image_id__delete",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}},
+          {"name": "image_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Image Id"}}
+        ],
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{car_id}/images/{image_id}/primary": {
+      "put": {
+        "tags": ["Cars"],
+        "summary": "Set Primary Car Image",
+        "operationId": "set_primary_car_image_cars__car_id__images__image_id__primary_put",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}},
+          {"name": "image_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Image Id"}}
+        ],
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{car_id}": {
+      "get": {
+        "tags": ["Cars"],
+        "summary": "Get Car",
+        "operationId": "get_car_cars__car_id__get",
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/CarResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Cars"],
+        "summary": "Update Car",
+        "operationId": "update_car_cars__car_id__put",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CarUpdate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/CarResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Cars"],
+        "summary": "Delete Car",
+        "operationId": "delete_car_cars__car_id__delete",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/car-interest/{car_id}": {
+      "post": {
+        "tags": ["Customer Interest"],
+        "summary": "Add Interest",
+        "operationId": "add_interest_car_interest__car_id__post",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CustomerInterestCreate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/CustomerInterestResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Customer Interest"],
+        "summary": "Get Customer Interests By Car",
+        "operationId": "get_customer_interests_by_car_car_interest__car_id__get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}},
+          {"name": "interest_date", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}], "description": "Filter by interest creation date (YYYY-MM-DD)", "title": "Interest Date"}, "description": "Filter by interest creation date (YYYY-MM-DD)"}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/CustomerInterestResponse"}, "title": "Response Get Customer Interests By Car Car Interest  Car Id  Get"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favorites/{car_id}": {
+      "post": {
+        "tags": ["Favorites"],
+        "summary": "Add to Favorites",
+        "operationId": "add_to_favorites_favorites__car_id__post",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Favorites"],
+        "summary": "Remove from Favorites",
+        "operationId": "remove_from_favorites_favorites__car_id__delete",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "car_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Car Id"}}],
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/favorites": {
+      "get": {
+        "tags": ["Favorites"],
+        "summary": "Get User Favorites",
+        "operationId": "get_user_favorites_favorites_get",
+        "security": [{"HTTPBearer": []}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/CarResponse"}, "title": "User Favorites"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/me": {
+      "get": {
+        "tags": ["Customers"],
+        "summary": "Get Current Customer Profile",
+        "operationId": "get_current_customer_customers_me_get",
+        "security": [{"HTTPBearer": []}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/CustomerResponse"}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Customers"],
+        "summary": "Update Current Customer Profile",
+        "operationId": "update_current_customer_customers_me_put",
+        "security": [{"HTTPBearer": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CustomerUpdate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/CustomerResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sell-car-requests": {
+      "post": {
+        "tags": ["Sell Car Requests"],
+        "summary": "Create Sell Car Request",
+        "operationId": "create_sell_car_request_sell_car_requests_post",
+        "security": [{"HTTPBearer": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/SellCarRequestCreate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SellCarRequestResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Sell Car Requests"],
+        "summary": "Get All Sell Car Requests (Admin)",
+        "operationId": "get_all_sell_car_requests_sell_car_requests_get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "page", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "default": 1, "title": "Page"}},
+          {"name": "page_size", "in": "query", "required": false, "schema": {"type": "integer", "maximum": 100, "default": 10, "title": "Page Size"}},
+          {"name": "status", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Status"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/SellCarRequestResponse"}, "title": "Sell Car Requests"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sell-car-requests/me": {
+      "get": {
+        "tags": ["Sell Car Requests"],
+        "summary": "Get My Sell Car Requests",
+        "operationId": "get_my_sell_car_requests_sell_car_requests_me_get",
+        "security": [{"HTTPBearer": []}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/SellCarRequestResponse"}, "title": "My Sell Car Requests"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sell-car-requests/{id}": {
+      "get": {
+        "tags": ["Sell Car Requests"],
+        "summary": "Get Sell Car Request by ID",
+        "operationId": "get_sell_car_request_by_id_sell_car_requests__id__get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Request Id"}}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SellCarRequestResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Sell Car Requests"],
+        "summary": "Update Sell Car Request Status",
+        "operationId": "update_sell_car_request_status_sell_car_requests__id__put",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Request Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/StatusUpdate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SellCarRequestResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance-enquiries": {
+      "post": {
+        "tags": ["Finance Enquiries"],
+        "summary": "Create Finance Enquiry",
+        "operationId": "create_finance_enquiry_finance_enquiries_post",
+        "security": [{"HTTPBearer": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/FinanceEnquiryCreate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/FinanceEnquiryResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Finance Enquiries"],
+        "summary": "Get All Finance Enquiries (Admin)",
+        "operationId": "get_all_finance_enquiries_finance_enquiries_get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "page", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "default": 1, "title": "Page"}},
+          {"name": "page_size", "in": "query", "required": false, "schema": {"type": "integer", "maximum": 100, "default": 10, "title": "Page Size"}},
+          {"name": "status", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Status"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/FinanceEnquiryResponse"}, "title": "Finance Enquiries"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance-enquiries/me": {
+      "get": {
+        "tags": ["Finance Enquiries"],
+        "summary": "Get My Finance Enquiries",
+        "operationId": "get_my_finance_enquiries_finance_enquiries_me_get",
+        "security": [{"HTTPBearer": []}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/FinanceEnquiryResponse"}, "title": "My Finance Enquiries"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/finance-enquiries/{id}": {
+      "get": {
+        "tags": ["Finance Enquiries"],
+        "summary": "Get Finance Enquiry by ID",
+        "operationId": "get_finance_enquiry_by_id_finance_enquiries__id__get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Enquiry Id"}}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/FinanceEnquiryResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Finance Enquiries"],
+        "summary": "Update Finance Enquiry Status",
+        "operationId": "update_finance_enquiry_status_finance_enquiries__id__put",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Enquiry Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/StatusUpdate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/FinanceEnquiryResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/insurance-enquiries": {
+      "post": {
+        "tags": ["Insurance Enquiries"],
+        "summary": "Create Insurance Enquiry",
+        "operationId": "create_insurance_enquiry_insurance_enquiries_post",
+        "security": [{"HTTPBearer": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/InsuranceEnquiryCreate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/InsuranceEnquiryResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Insurance Enquiries"],
+        "summary": "Get All Insurance Enquiries (Admin)",
+        "operationId": "get_all_insurance_enquiries_insurance_enquiries_get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "page", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "default": 1, "title": "Page"}},
+          {"name": "page_size", "in": "query", "required": false, "schema": {"type": "integer", "maximum": 100, "default": 10, "title": "Page Size"}},
+          {"name": "status", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Status"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/InsuranceEnquiryResponse"}, "title": "Insurance Enquiries"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/insurance-enquiries/me": {
+      "get": {
+        "tags": ["Insurance Enquiries"],
+        "summary": "Get My Insurance Enquiries",
+        "operationId": "get_my_insurance_enquiries_insurance_enquiries_me_get",
+        "security": [{"HTTPBearer": []}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/InsuranceEnquiryResponse"}, "title": "My Insurance Enquiries"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/insurance-enquiries/{id}": {
+      "get": {
+        "tags": ["Insurance Enquiries"],
+        "summary": "Get Insurance Enquiry by ID",
+        "operationId": "get_insurance_enquiry_by_id_insurance_enquiries__id__get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Enquiry Id"}}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/InsuranceEnquiryResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Insurance Enquiries"],
+        "summary": "Update Insurance Enquiry Status",
+        "operationId": "update_insurance_enquiry_status_insurance_enquiries__id__put",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Enquiry Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/StatusUpdate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/InsuranceEnquiryResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service-requests": {
+      "post": {
+        "tags": ["Service Requests"],
+        "summary": "Create Service Request",
+        "operationId": "create_service_request_service_requests_post",
+        "security": [{"HTTPBearer": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ServiceRequestCreate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ServiceRequestResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Service Requests"],
+        "summary": "Get All Service Requests (Admin)",
+        "operationId": "get_all_service_requests_service_requests_get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "page", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "default": 1, "title": "Page"}},
+          {"name": "page_size", "in": "query", "required": false, "schema": {"type": "integer", "maximum": 100, "default": 10, "title": "Page Size"}},
+          {"name": "status", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Status"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/ServiceRequestResponse"}, "title": "Service Requests"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service-requests/me": {
+      "get": {
+        "tags": ["Service Requests"],
+        "summary": "Get My Service Requests",
+        "operationId": "get_my_service_requests_service_requests_me_get",
+        "security": [{"HTTPBearer": []}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/ServiceRequestResponse"}, "title": "My Service Requests"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/service-requests/{id}": {
+      "get": {
+        "tags": ["Service Requests"],
+        "summary": "Get Service Request by ID",
+        "operationId": "get_service_request_by_id_service_requests__id__get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Request Id"}}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ServiceRequestResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Service Requests"],
+        "summary": "Update Service Request Status",
+        "operationId": "update_service_request_status_service_requests__id__put",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "id", "in": "path", "required": true, "schema": {"type": "string", "title": "Request Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/StatusUpdate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/ServiceRequestResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dealers": {
+      "get": {
+        "tags": ["Dealers"],
+        "summary": "Get All Dealers",
+        "operationId": "get_all_dealers_dealers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"items": {"$ref": "#/components/schemas/DealerWithCarsResponse"}, "type": "array", "title": "Response Get All Dealers Dealers Get"}
+              }
+            }
+          }
+        },
+        "security": [{"HTTPBearer": []}]
+      },
+      "post": {
+        "tags": ["Dealers"],
+        "summary": "Create Dealer",
+        "operationId": "create_dealer_dealers_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/DealerCreate"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/app__schemas__dealer_schema__DealerResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        },
+        "security": [{"HTTPBearer": []}]
+      }
+    },
+    "/dealers/{dealer_id}": {
+      "get": {
+        "tags": ["Dealers"],
+        "summary": "Get Dealer By Id",
+        "operationId": "get_dealer_by_id_dealers__dealer_id__get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "dealer_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Dealer Id"}}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/app__schemas__dealer_schema__DealerResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Dealers"],
+        "summary": "Update Dealer",
+        "operationId": "update_dealer_dealers__dealer_id__put",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "dealer_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Dealer Id"}}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/DealerUpdate"}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/app__schemas__dealer_schema__DealerResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Dealers"],
+        "summary": "Delete Dealer",
+        "operationId": "delete_dealer_dealers__dealer_id__delete",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [{"name": "dealer_id", "in": "path", "required": true, "schema": {"type": "string", "title": "Dealer Id"}}],
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/customer-interests": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get All Customer Interests (Admin)",
+        "operationId": "get_all_customer_interests_admin_customer_interests_get",
+        "security": [{"HTTPBearer": []}],
+        "parameters": [
+          {"name": "page", "in": "query", "required": false, "schema": {"type": "integer", "minimum": 1, "default": 1, "title": "Page"}},
+          {"name": "page_size", "in": "query", "required": false, "schema": {"type": "integer", "maximum": 100, "default": 10, "title": "Page Size"}},
+          {"name": "car_id", "in": "query", "required": false, "schema": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Id"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/CustomerInterestResponse"}, "title": "Customer Interests"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/dashboard/summary": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get Dashboard Summary",
+        "operationId": "get_dashboard_summary_admin_dashboard_summary_get",
+        "security": [{"HTTPBearer": []}],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/DashboardSummary"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/testimonials": {
+      "get": {
+        "tags": ["Content"],
+        "summary": "Get Testimonials",
+        "operationId": "get_testimonials_testimonials_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"type": "array", "items": {"$ref": "#/components/schemas/TestimonialResponse"}, "title": "Testimonials"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/homepage": {
+      "get": {
+        "tags": ["Content"],
+        "summary": "Get Homepage Content",
+        "operationId": "get_homepage_content_content_homepage_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HomepageContent"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content/about": {
+      "get": {
+        "tags": ["Content"],
+        "summary": "Get About Content",
+        "operationId": "get_about_content_content_about_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/AboutContent"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contact-us": {
+      "post": {
+        "tags": ["Contact"],
+        "summary": "Submit Contact Form",
+        "operationId": "submit_contact_form_contact_us_post",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/ContactForm"}
+            }
+          }
+        },
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Signup",
+        "description": "Signup endpoint for creating new user accounts.\nDefaults to 'customer' role if not specified.",
+        "operationId": "signup_auth_signup_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/SignupRequest"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/create-owner": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Create Owner",
+        "description": "Create owner accounts only for configured owner email addresses.\nRequires a creation secret and an authorized owner email.",
+        "operationId": "create_owner_auth_create_owner_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/CreateOwnerRequest"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login",
+        "description": "Login endpoint that returns JWT token as httpOnly, Secure, SameSite cookie.",
+        "operationId": "login_auth_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/LoginRequest"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/owner/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Owner Login",
+        "description": "Secure login for owners with email and password.",
+        "operationId": "owner_login_auth_owner_login_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/LoginRequest"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}},
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/customer/request-otp": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Request OTP",
+        "description": "Request OTP for customer login/signup.",
+        "operationId": "request_otp_auth_customer_request_otp_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/OTPRequest"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/OTPResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/customer/verify-otp": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Verify OTP",
+        "description": "Verify OTP and login customer.",
+        "operationId": "verify_otp_auth_customer_verify_otp_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {"$ref": "#/components/schemas/OTPVerify"}
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/AuthResponse"}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/HTTPValidationError"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/verify": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Verify Token",
+        "description": "Verify if the current token/session is valid or return not authenticated.\nAlways returns 200, never 401.\nClient sends token via cookie (automatically handled by browser).",
+        "operationId": "verify_token_auth_verify_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Logout",
+        "description": "Logout endpoint that clears the authentication cookie.",
+        "operationId": "logout_auth_logout_post",
+        "responses": {
+          "200": {"description": "Successful Response", "content": {"application/json": {"schema": {}}}}
+        },
+        "security": [{"HTTPBearer": []}]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_create_car_cars_post": {
+        "properties": {
+          "file1": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File1", "description": "First car image (required)"},
+          "file2": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File2", "description": "Second car image (optional)"},
+          "file3": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File3", "description": "Third car image (optional)"},
+          "file4": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File4", "description": "Fourth car image (optional)"},
+          "file5": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File5", "description": "Fifth car image (optional)"},
+          "report_file": {"type": "string", "contentMediaType": "application/octet-stream", "title": "Report File", "description": "Car report PDF (optional)"},
+          "primary_image_index": {"type": "integer", "title": "Primary Image Index", "description": "Index of primary image (0-based, corresponds to file1=0, file2=1, etc.)", "default": 0},
+          "car_name": {"type": "string", "title": "Car Name", "description": "Car model name"},
+          "car_company": {"type": "string", "title": "Car Company", "description": "Car manufacturer/brand"},
+          "car_fuel_type": {"type": "string", "title": "Car Fuel Type", "description": "Fuel type: Petrol, Diesel, CNG, or Electric"},
+          "car_manufacture_year": {"type": "integer", "title": "Car Manufacture Year", "description": "Year of manufacture (1990-2026)"},
+          "car_registration_date": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Registration Date", "description": "Registration date (YYYY-MM-DD)"},
+          "car_registration_state": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Registration State", "description": "State of registration"},
+          "car_registration_number": {"type": "string", "title": "Car Registration Number", "description": "Unique car registration number"},
+          "car_variant": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Variant", "description": "Car variant/trim level"},
+          "kms_driven": {"type": "integer", "title": "Kms Driven", "description": "Kilometers driven (0-500000)"},
+          "transmission": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Transmission", "description": "Transmission type: Manual or Automatic"},
+          "color": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Color", "description": "Car color"},
+          "expected_price": {"type": "number", "title": "Expected Price", "description": "Expected price in INR (10000-10000000)"},
+          "number_of_owners": {"anyOf": [{"type": "integer"}, {"type": "null"}], "title": "Number Of Owners", "description": "Number of previous owners"},
+          "insurance_valid_upto": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Insurance Valid Upto", "description": "Insurance validity date (YYYY-MM-DD)"},
+          "dealer_id": {"type": "string", "title": "Dealer Id", "description": "Dealer ID who owns this car"}
+        },
+        "type": "object",
+        "required": ["file1", "car_name", "car_company", "car_fuel_type", "car_manufacture_year", "car_registration_number", "kms_driven", "expected_price", "dealer_id"],
+        "title": "Body_create_car_cars_post"
+      },
+      "Body_upload_car_images_cars__car_id__images_post": {
+        "properties": {
+          "file1": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File1", "description": "Car image (required)"},
+          "file2": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File2", "description": "Car image (optional)"},
+          "file3": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File3", "description": "Car image (optional)"},
+          "file4": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File4", "description": "Car image (optional)"},
+          "file5": {"type": "string", "contentMediaType": "application/octet-stream", "title": "File5", "description": "Car image (optional)"}
+        },
+        "type": "object",
+        "required": ["file1"],
+        "title": "Body_upload_car_images_cars__car_id__images_post"
+      },
+      "Body_upload_car_report_endpoint_cars__car_id__report_post": {
+        "properties": {
+          "report_file": {"type": "string", "contentMediaType": "application/octet-stream", "title": "Report File", "description": "Car report PDF file"}
+        },
+        "type": "object",
+        "required": ["report_file"],
+        "title": "Body_upload_car_report_endpoint_cars__car_id__report_post"
+      },
+      "CarCreateResponse": {
+        "properties": {
+          "message": {"type": "string", "title": "Message"},
+          "car_id": {"type": "string", "title": "Car Id"}
+        },
+        "type": "object",
+        "required": ["message", "car_id"],
+        "title": "CarCreateResponse"
+      },
+      "CarImageResponse": {
+        "properties": {
+          "image_url": {"type": "string", "title": "Image Url"},
+          "is_primary": {"type": "boolean", "title": "Is Primary"}
+        },
+        "type": "object",
+        "required": ["image_url", "is_primary"],
+        "title": "CarImageResponse"
+      },
+      "CarResponse": {
+        "properties": {
+          "car_id": {"type": "string", "title": "Car Id"},
+          "car_name": {"type": "string", "title": "Car Name"},
+          "car_company": {"type": "string", "title": "Car Company"},
+          "car_fuel_type": {"type": "string", "title": "Car Fuel Type"},
+          "car_manufacture_year": {"type": "integer", "title": "Car Manufacture Year"},
+          "car_registration_date": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}], "title": "Car Registration Date"},
+          "car_registration_state": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Registration State"},
+          "car_registration_number": {"type": "string", "title": "Car Registration Number"},
+          "car_variant": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Variant"},
+          "kms_driven": {"type": "integer", "title": "Kms Driven"},
+          "transmission": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Transmission"},
+          "color": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Color"},
+          "expected_price": {"type": "number", "title": "Expected Price"},
+          "number_of_owners": {"anyOf": [{"type": "integer"}, {"type": "null"}], "title": "Number Of Owners"},
+          "insurance_valid_upto": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}], "title": "Insurance Valid Upto"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"},
+          "status": {"$ref": "#/components/schemas/CarStatus"},
+          "dealer": {"$ref": "#/components/schemas/app__schemas__car_schema__DealerResponse"},
+          "report_url": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Report Url"},
+          "images": {"items": {"$ref": "#/components/schemas/CarImageResponse"}, "type": "array", "title": "Images"}
+        },
+        "type": "object",
+        "required": ["car_id", "car_name", "car_company", "car_fuel_type", "car_manufacture_year", "car_registration_date", "car_registration_state", "car_registration_number", "car_variant", "kms_driven", "transmission", "color", "expected_price", "number_of_owners", "insurance_valid_upto", "created_at", "updated_at", "status", "dealer", "images"],
+        "title": "CarResponse"
+      },
+      "CarStatus": {"type": "string", "enum": ["available", "sold"], "title": "CarStatus"},
+      "CarUpdate": {
+        "properties": {
+          "dealer_id": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Dealer Id"},
+          "car_name": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Name"},
+          "car_company": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Company"},
+          "car_fuel_type": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Fuel Type"},
+          "car_manufacture_year": {"anyOf": [{"type": "integer"}, {"type": "null"}], "title": "Car Manufacture Year"},
+          "car_registration_date": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}], "title": "Car Registration Date"},
+          "car_registration_state": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Registration State"},
+          "car_registration_number": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Registration Number"},
+          "car_variant": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Car Variant"},
+          "kms_driven": {"anyOf": [{"type": "integer"}, {"type": "null"}], "title": "Kms Driven"},
+          "transmission": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Transmission"},
+          "color": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Color"},
+          "expected_price": {"anyOf": [{"type": "number"}, {"type": "null"}], "title": "Expected Price"},
+          "number_of_owners": {"anyOf": [{"type": "integer"}, {"type": "null"}], "title": "Number Of Owners"},
+          "insurance_valid_upto": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}], "title": "Insurance Valid Upto"},
+          "status": {"anyOf": [{"$ref": "#/components/schemas/CarStatus"}, {"type": "null"}]},
+          "report_url": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Report Url"}
+        },
+        "type": "object",
+        "title": "CarUpdate"
+      },
+      "CreateOwnerRequest": {
+        "properties": {
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "password": {"type": "string", "title": "Password"},
+          "creation_secret": {"type": "string", "title": "Creation Secret"}
+        },
+        "type": "object",
+        "required": ["email", "password", "creation_secret"],
+        "title": "CreateOwnerRequest"
+      },
+      "CustomerInterestCreate": {
+        "properties": {
+          "customer_name": {"type": "string", "maxLength": 100, "minLength": 2, "title": "Customer Name"},
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "phone": {"type": "string", "title": "Phone"},
+          "location": {"type": "string", "maxLength": 200, "minLength": 2, "title": "Location"}
+        },
+        "type": "object",
+        "required": ["customer_name", "email", "phone", "location"],
+        "title": "CustomerInterestCreate"
+      },
+      "CustomerInterestResponse": {
+        "properties": {
+          "interest_id": {"type": "string", "title": "Interest Id"},
+          "car_id": {"type": "string", "title": "Car Id"},
+          "customer_name": {"type": "string", "title": "Customer Name"},
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "phone": {"type": "string", "title": "Phone"},
+          "location": {"type": "string", "title": "Location"},
+          "interest_created_at": {"type": "string", "format": "date-time", "title": "Interest Created At"}
+        },
+        "type": "object",
+        "required": ["interest_id", "car_id", "customer_name", "email", "phone", "location", "interest_created_at"],
+        "title": "CustomerInterestResponse"
+      },
+      "CustomerResponse": {
+        "properties": {
+          "id": {"type": "string", "title": "Id"},
+          "mobile_number": {"type": "string", "title": "Mobile Number"},
+          "name": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Name"},
+          "email": {"anyOf": [{"type": "string", "format": "email"}, {"type": "null"}], "title": "Email"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"}
+        },
+        "type": "object",
+        "required": ["id", "mobile_number", "created_at"],
+        "title": "CustomerResponse"
+      },
+      "CustomerUpdate": {
+        "properties": {
+          "name": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Name"},
+          "email": {"anyOf": [{"type": "string", "format": "email"}, {"type": "null"}], "title": "Email"}
+        },
+        "type": "object",
+        "title": "CustomerUpdate"
+      },
+      "DealerCreate": {
+        "properties": {
+          "dealer_name": {"type": "string", "maxLength": 150, "minLength": 2, "title": "Dealer Name"},
+          "dealer_address_line1": {"type": "string", "maxLength": 200, "minLength": 5, "title": "Dealer Address Line1"},
+          "dealer_address_line2": {"anyOf": [{"type": "string", "maxLength": 200}, {"type": "null"}], "title": "Dealer Address Line2"},
+          "city": {"type": "string", "maxLength": 100, "minLength": 2, "title": "City"},
+          "state": {"type": "string", "maxLength": 100, "minLength": 2, "title": "State"},
+          "pincode": {"type": "string", "maxLength": 10, "minLength": 6, "pattern": "^\\d{6,10}$", "title": "Pincode"}
+        },
+        "type": "object",
+        "required": ["dealer_name", "dealer_address_line1", "city", "state", "pincode"],
+        "title": "DealerCreate"
+      },
+      "DealerUpdate": {
+        "properties": {
+          "dealer_name": {"anyOf": [{"type": "string", "maxLength": 150, "minLength": 2}, {"type": "null"}], "title": "Dealer Name"},
+          "dealer_address_line1": {"anyOf": [{"type": "string", "maxLength": 200, "minLength": 5}, {"type": "null"}], "title": "Dealer Address Line1"},
+          "dealer_address_line2": {"anyOf": [{"type": "string", "maxLength": 200}, {"type": "null"}], "title": "Dealer Address Line2"},
+          "city": {"anyOf": [{"type": "string", "maxLength": 100, "minLength": 2}, {"type": "null"}], "title": "City"},
+          "state": {"anyOf": [{"type": "string", "maxLength": 100, "minLength": 2}, {"type": "null"}], "title": "State"},
+          "pincode": {"anyOf": [{"type": "string", "maxLength": 10, "minLength": 6, "pattern": "^\\d{6,10}$"}, {"type": "null"}], "title": "Pincode"}
+        },
+        "type": "object",
+        "title": "DealerUpdate"
+      },
+      "DealerWithCarsResponse": {
+        "properties": {
+          "dealer_id": {"type": "string", "title": "Dealer Id"},
+          "dealer_name": {"type": "string", "title": "Dealer Name"},
+          "dealer_address_line1": {"type": "string", "title": "Dealer Address Line1"},
+          "dealer_address_line2": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Dealer Address Line2"},
+          "city": {"type": "string", "title": "City"},
+          "state": {"type": "string", "title": "State"},
+          "pincode": {"type": "string", "title": "Pincode"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"},
+          "cars_count": {"type": "integer", "title": "Cars Count"}
+        },
+        "type": "object",
+        "required": ["dealer_id", "dealer_name", "dealer_address_line1", "dealer_address_line2", "city", "state", "pincode", "created_at", "updated_at", "cars_count"],
+        "title": "DealerWithCarsResponse"
+      },
+      "DashboardSummary": {
+        "properties": {
+          "total_cars": {"type": "integer", "title": "Total Cars"},
+          "available_cars": {"type": "integer", "title": "Available Cars"},
+          "sold_cars": {"type": "integer", "title": "Sold Cars"},
+          "total_dealers": {"type": "integer", "title": "Total Dealers"},
+          "total_customer_interests": {"type": "integer", "title": "Total Customer Interests"},
+          "total_sell_requests": {"type": "integer", "title": "Total Sell Requests"},
+          "total_finance_enquiries": {"type": "integer", "title": "Total Finance Enquiries"},
+          "total_insurance_enquiries": {"type": "integer", "title": "Total Insurance Enquiries"},
+          "total_service_requests": {"type": "integer", "title": "Total Service Requests"}
+        },
+        "type": "object",
+        "required": ["total_cars", "available_cars", "sold_cars", "total_dealers", "total_customer_interests", "total_sell_requests", "total_finance_enquiries", "total_insurance_enquiries", "total_service_requests"],
+        "title": "DashboardSummary"
+      },
+      "FinanceEnquiryCreate": {
+        "properties": {
+          "car_id": {"type": "string", "title": "Car Id"},
+          "loan_amount": {"type": "number", "title": "Loan Amount"},
+          "monthly_income": {"type": "number", "title": "Monthly Income"},
+          "city": {"type": "string", "title": "City"}
+        },
+        "type": "object",
+        "required": ["car_id", "loan_amount", "monthly_income", "city"],
+        "title": "FinanceEnquiryCreate"
+      },
+      "FinanceEnquiryResponse": {
+        "properties": {
+          "id": {"type": "string", "title": "Id"},
+          "customer_id": {"type": "string", "title": "Customer Id"},
+          "customer_name": {"type": "string", "title": "Customer Name"},
+          "phone": {"type": "string", "title": "Phone"},
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "car_id": {"type": "string", "title": "Car Id"},
+          "loan_amount": {"type": "number", "title": "Loan Amount"},
+          "monthly_income": {"type": "number", "title": "Monthly Income"},
+          "city": {"type": "string", "title": "City"},
+          "status": {"type": "string", "title": "Status"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"}
+        },
+        "type": "object",
+        "required": ["id", "customer_id", "customer_name", "phone", "email", "car_id", "loan_amount", "monthly_income", "city", "status", "created_at", "updated_at"],
+        "title": "FinanceEnquiryResponse"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {"items": {"$ref": "#/components/schemas/ValidationError"}, "type": "array", "title": "Detail"}
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "InsuranceEnquiryCreate": {
+        "properties": {
+          "registration_number": {"type": "string", "title": "Registration Number"},
+          "insurance_type": {"type": "string", "enum": ["new", "renewal", "used_car_transfer"], "title": "Insurance Type"},
+          "city": {"type": "string", "title": "City"}
+        },
+        "type": "object",
+        "required": ["registration_number", "insurance_type", "city"],
+        "title": "InsuranceEnquiryCreate"
+      },
+      "InsuranceEnquiryResponse": {
+        "properties": {
+          "id": {"type": "string", "title": "Id"},
+          "customer_id": {"type": "string", "title": "Customer Id"},
+          "customer_name": {"type": "string", "title": "Customer Name"},
+          "phone": {"type": "string", "title": "Phone"},
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "registration_number": {"type": "string", "title": "Registration Number"},
+          "insurance_type": {"type": "string", "title": "Insurance Type"},
+          "city": {"type": "string", "title": "City"},
+          "status": {"type": "string", "title": "Status"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"}
+        },
+        "type": "object",
+        "required": ["id", "customer_id", "customer_name", "phone", "email", "registration_number", "insurance_type", "city", "status", "created_at", "updated_at"],
+        "title": "InsuranceEnquiryResponse"
+      },
+      "LoginRequest": {
+        "properties": {
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "password": {"type": "string", "title": "Password"}
+        },
+        "type": "object",
+        "required": ["email", "password"],
+        "title": "LoginRequest"
+      },
+      "OTPRequest": {
+        "properties": {
+          "mobile_number": {"type": "string", "title": "Mobile Number"}
+        },
+        "type": "object",
+        "required": ["mobile_number"],
+        "title": "OTPRequest"
+      },
+      "OTPResponse": {
+        "properties": {
+          "success": {"type": "boolean", "title": "Success"},
+          "message": {"type": "string", "title": "Message"},
+          "is_new_customer": {"type": "boolean", "title": "Is New Customer"}
+        },
+        "type": "object",
+        "required": ["success", "message", "is_new_customer"],
+        "title": "OTPResponse"
+      },
+      "OTPVerify": {
+        "properties": {
+          "mobile_number": {"type": "string", "title": "Mobile Number"},
+          "otp": {"type": "string", "title": "Otp"}
+        },
+        "type": "object",
+        "required": ["mobile_number", "otp"],
+        "title": "OTPVerify"
+      },
+      "AuthResponse": {
+        "properties": {
+          "success": {"type": "boolean", "title": "Success"},
+          "message": {"type": "string", "title": "Message"},
+          "user": {"$ref": "#/components/schemas/CustomerResponse"}
+        },
+        "type": "object",
+        "required": ["success", "message", "user"],
+        "title": "AuthResponse"
+      },
+      "SellCarRequestCreate": {
+        "properties": {
+          "car_company": {"type": "string", "title": "Car Company"},
+          "car_model": {"type": "string", "title": "Car Model"},
+          "manufacture_year": {"type": "integer", "title": "Manufacture Year"},
+          "kms_driven": {"type": "integer", "title": "Kms Driven"},
+          "fuel_type": {"type": "string", "title": "Fuel Type"},
+          "expected_price": {"type": "number", "title": "Expected Price"},
+          "city": {"type": "string", "title": "City"},
+          "description": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Description"}
+        },
+        "type": "object",
+        "required": ["car_company", "car_model", "manufacture_year", "kms_driven", "fuel_type", "expected_price", "city"],
+        "title": "SellCarRequestCreate"
+      },
+      "SellCarRequestResponse": {
+        "properties": {
+          "id": {"type": "string", "title": "Id"},
+          "customer_id": {"type": "string", "title": "Customer Id"},
+          "customer_name": {"type": "string", "title": "Customer Name"},
+          "phone": {"type": "string", "title": "Phone"},
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "car_company": {"type": "string", "title": "Car Company"},
+          "car_model": {"type": "string", "title": "Car Model"},
+          "manufacture_year": {"type": "integer", "title": "Manufacture Year"},
+          "kms_driven": {"type": "integer", "title": "Kms Driven"},
+          "fuel_type": {"type": "string", "title": "Fuel Type"},
+          "expected_price": {"type": "number", "title": "Expected Price"},
+          "city": {"type": "string", "title": "City"},
+          "description": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Description"},
+          "status": {"type": "string", "title": "Status"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"}
+        },
+        "type": "object",
+        "required": ["id", "customer_id", "customer_name", "phone", "email", "car_company", "car_model", "manufacture_year", "kms_driven", "fuel_type", "expected_price", "city", "status", "created_at", "updated_at"],
+        "title": "SellCarRequestResponse"
+      },
+      "ServiceRequestCreate": {
+        "properties": {
+          "service_type": {"type": "string", "enum": ["repair", "maintenance", "denting", "painting"], "title": "Service Type"},
+          "car_company": {"type": "string", "title": "Car Company"},
+          "car_model": {"type": "string", "title": "Car Model"},
+          "description": {"type": "string", "title": "Description"},
+          "preferred_date": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}], "title": "Preferred Date"}
+        },
+        "type": "object",
+        "required": ["service_type", "car_company", "car_model", "description"],
+        "title": "ServiceRequestCreate"
+      },
+      "ServiceRequestResponse": {
+        "properties": {
+          "id": {"type": "string", "title": "Id"},
+          "customer_id": {"type": "string", "title": "Customer Id"},
+          "customer_name": {"type": "string", "title": "Customer Name"},
+          "phone": {"type": "string", "title": "Phone"},
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "service_type": {"type": "string", "title": "Service Type"},
+          "car_company": {"type": "string", "title": "Car Company"},
+          "car_model": {"type": "string", "title": "Car Model"},
+          "description": {"type": "string", "title": "Description"},
+          "preferred_date": {"anyOf": [{"type": "string", "format": "date"}, {"type": "null"}], "title": "Preferred Date"},
+          "status": {"type": "string", "title": "Status"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"}
+        },
+        "type": "object",
+        "required": ["id", "customer_id", "customer_name", "phone", "email", "service_type", "car_company", "car_model", "description", "status", "created_at", "updated_at"],
+        "title": "ServiceRequestResponse"
+      },
+      "SignupRequest": {
+        "properties": {
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "password": {"type": "string", "title": "Password"}
+        },
+        "type": "object",
+        "required": ["email", "password"],
+        "title": "SignupRequest"
+      },
+      "StatusUpdate": {
+        "properties": {
+          "status": {"type": "string", "title": "Status"}
+        },
+        "type": "object",
+        "required": ["status"],
+        "title": "StatusUpdate"
+      },
+      "TestimonialResponse": {
+        "properties": {
+          "id": {"type": "string", "title": "Id"},
+          "customer_name": {"type": "string", "title": "Customer Name"},
+          "content": {"type": "string", "title": "Content"},
+          "rating": {"type": "integer", "title": "Rating"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"}
+        },
+        "type": "object",
+        "required": ["id", "customer_name", "content", "rating", "created_at"],
+        "title": "TestimonialResponse"
+      },
+      "HomepageContent": {
+        "properties": {
+          "hero_title": {"type": "string", "title": "Hero Title"},
+          "hero_subtitle": {"type": "string", "title": "Hero Subtitle"},
+          "hero_cta_text": {"type": "string", "title": "Hero Cta Text"},
+          "services_section_title": {"type": "string", "title": "Services Section Title"},
+          "about_section_content": {"type": "string", "title": "About Section Content"}
+        },
+        "type": "object",
+        "required": ["hero_title", "hero_subtitle", "hero_cta_text", "services_section_title", "about_section_content"],
+        "title": "HomepageContent"
+      },
+      "AboutContent": {
+        "properties": {
+          "title": {"type": "string", "title": "Title"},
+          "content": {"type": "string", "title": "Content"},
+          "mission": {"type": "string", "title": "Mission"},
+          "vision": {"type": "string", "title": "Vision"}
+        },
+        "type": "object",
+        "required": ["title", "content", "mission", "vision"],
+        "title": "AboutContent"
+      },
+      "ContactForm": {
+        "properties": {
+          "name": {"type": "string", "title": "Name"},
+          "email": {"type": "string", "format": "email", "title": "Email"},
+          "phone": {"type": "string", "title": "Phone"},
+          "message": {"type": "string", "title": "Message"}
+        },
+        "type": "object",
+        "required": ["name", "email", "phone", "message"],
+        "title": "ContactForm"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {"items": {"anyOf": [{"type": "string"}, {"type": "integer"}]}, "type": "array", "title": "Location"},
+          "msg": {"type": "string", "title": "Message"},
+          "type": {"type": "string", "title": "Error Type"},
+          "input": {"title": "Input"},
+          "ctx": {"type": "object", "title": "Context"}
+        },
+        "type": "object",
+        "required": ["loc", "msg", "type"],
+        "title": "ValidationError"
+      },
+      "app__schemas__car_schema__DealerResponse": {
+        "properties": {
+          "dealer_id": {"type": "string", "title": "Dealer Id"},
+          "dealer_name": {"type": "string", "title": "Dealer Name"},
+          "dealer_address_line1": {"type": "string", "title": "Dealer Address Line1"},
+          "dealer_address_line2": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Dealer Address Line2"},
+          "city": {"type": "string", "title": "City"},
+          "state": {"type": "string", "title": "State"},
+          "pincode": {"type": "string", "title": "Pincode"}
+        },
+        "type": "object",
+        "required": ["dealer_id", "dealer_name", "dealer_address_line1", "dealer_address_line2", "city", "state", "pincode"],
+        "title": "DealerResponse"
+      },
+      "app__schemas__dealer_schema__DealerResponse": {
+        "properties": {
+          "dealer_id": {"type": "string", "title": "Dealer Id"},
+          "dealer_name": {"type": "string", "title": "Dealer Name"},
+          "dealer_address_line1": {"type": "string", "title": "Dealer Address Line1"},
+          "dealer_address_line2": {"anyOf": [{"type": "string"}, {"type": "null"}], "title": "Dealer Address Line2"},
+          "city": {"type": "string", "title": "City"},
+          "state": {"type": "string", "title": "State"},
+          "pincode": {"type": "string", "title": "Pincode"},
+          "created_at": {"type": "string", "format": "date-time", "title": "Created At"},
+          "updated_at": {"type": "string", "format": "date-time", "title": "Updated At"}
+        },
+        "type": "object",
+        "required": ["dealer_id", "dealer_name", "dealer_address_line1", "dealer_address_line2", "city", "state", "pincode", "created_at", "updated_at"],
+        "title": "DealerResponse"
+      }
+    },
+    "securitySchemes": {
+      "HTTPBearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}

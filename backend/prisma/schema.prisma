@@ -1,0 +1,180 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String   @id @default(uuid())
+  role           String   @default("CUSTOMER")
+  email          String?  @unique
+  mobileNumber   String?  @unique
+  passwordHash   String?  
+  name           String?  
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  otpVerifications OtpVerification[]
+  customerInterests CustomerInterest[]
+  favorites      Favorite[]
+  sellCarRequests SellCarRequest[]
+  financeEnquiries FinanceEnquiry[]
+  insuranceEnquiries InsuranceEnquiry[]
+  serviceRequests ServiceRequest[]
+}
+
+model OtpVerification {
+  id           String   @id @default(uuid())
+  mobileNumber String
+  otpHash      String
+  purpose      String   @default("LOGIN")
+  expiresAt    DateTime
+  attemptCount Int      @default(0)
+  isUsed       Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  user         User?    @relation(fields: [userId], references: [id])
+  userId       String?
+}
+
+model Dealer {
+  id                  String   @id @default(uuid())
+  dealerName          String
+  dealerAddressLine1  String
+  dealerAddressLine2  String?
+  city                String
+  state               String
+  pincode             String
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  cars                Car[]
+}
+
+model Car {
+  id                   String    @id @default(uuid())
+  dealer               Dealer    @relation(fields: [dealerId], references: [id])
+  dealerId             String
+  carName              String
+  carCompany           String
+  carFuelType          String
+  carManufactureYear   Int
+  carRegistrationDate  DateTime?
+  carRegistrationState String?
+  carRegistrationNumber String
+  carVariant           String?
+  kmsDriven            Int
+  transmission         String?
+  color                String?
+  expectedPrice        Float
+  numberOfOwners       Int?
+  insuranceValidUpto   DateTime?
+  status               String    @default("available")
+  reportUrl            String?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+  images               CarImage[]
+  interests            CustomerInterest[]
+  favorites            Favorite[]
+}
+
+model CarImage {
+  id        String  @id @default(uuid())
+  car       Car     @relation(fields: [carId], references: [id])
+  carId     String
+  imageUrl  String
+  isPrimary Boolean @default(false)
+  createdAt DateTime @default(now())
+}
+
+model CustomerInterest {
+  id                String   @id @default(uuid())
+  car               Car      @relation(fields: [carId], references: [id])
+  carId             String
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
+  customerName      String
+  email             String
+  phone             String
+  location          String
+  interestCreatedAt DateTime @default(now())
+}
+
+model Favorite {
+  id        String @id @default(uuid())
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  car       Car    @relation(fields: [carId], references: [id])
+  carId     String
+  createdAt DateTime @default(now())
+}
+
+model SellCarRequest {
+  id              String   @id @default(uuid())
+  user            User     @relation(fields: [userId], references: [id])
+  userId          String
+  customerName    String
+  phone           String
+  email           String
+  carCompany      String
+  carModel        String
+  manufactureYear Int
+  kmsDriven       Int
+  fuelType        String
+  expectedPrice   Float
+  city            String
+  description     String?
+  status          String @default("new")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model FinanceEnquiry {
+  id             String   @id @default(uuid())
+  user           User     @relation(fields: [userId], references: [id])
+  userId         String
+  customerName   String
+  phone          String
+  email          String
+  carId          String?
+  loanAmount     Float
+  monthlyIncome  Float
+  city           String
+  status         String @default("new")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model InsuranceEnquiry {
+  id                 String   @id @default(uuid())
+  user               User     @relation(fields: [userId], references: [id])
+  userId             String
+  customerName       String
+  phone              String
+  email              String
+  registrationNumber String
+  insuranceType      String
+  city               String
+  status             String @default("new")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+
+model ServiceRequest {
+  id            String   @id @default(uuid())
+  user          User     @relation(fields: [userId], references: [id])
+  userId        String
+  customerName  String
+  phone         String
+  email         String
+  serviceType   String
+  carCompany    String
+  carModel      String
+  description   String
+  preferredDate DateTime?
+  status        String @default("new")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
