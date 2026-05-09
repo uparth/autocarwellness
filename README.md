@@ -262,6 +262,12 @@ cd backend && npm run mock
 # frontend/.env — point to mock
 VITE_API_BASE_URL=http://localhost:4001/api
 
+# Terminal 1
+cd backend && npm run mock
+
+# Terminal 2
+cd frontend && npm run dev
+
 Owner login: owner@autocarwellness.com / owner123
 
 Customer OTP: any 6-digit code (e.g. 123456)
